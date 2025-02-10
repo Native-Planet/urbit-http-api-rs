@@ -1,0 +1,15 @@
+[package]
+name = "urbit-http-api-rs"
+version = "0.1.0"
+edition = "2021"
+description = "A full-featured Rust port of the Urbit HTTP API (js-http-api)"
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json", "stream", "cookies"] }
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.7"
+futures = "0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+uuid = { version = "1", features = ["v4"] }
