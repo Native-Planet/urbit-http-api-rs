@@ -37,32 +37,30 @@ async fn main() -> Result<()> {
     urbit.event_source().await?;
     println!("Event source started.");
 
-   // Poke: Send a command with callbacks.
-   let poke_id = urbit.poke(
+    urbit.get_ship_name().await;
+    println!("Ship name: {:?}", urbit.ship);
+    urbit.get_our_name().await;
+    println!("Our name: {:?}", urbit.our);
+
+    // Poke: Send a command with callbacks.
+    let poke_id = urbit.poke(
         "hood",
-        "helm-hi",  // intentionally a malformed mark to trigger an error response
+        "helm-hi", 
         json!("Test payload"),
         || {
-            println!("Poke succeeded! Clearing message and error display.");
+            println!("Poke succeeded");
         },
         |err| {
-            println!("Poke failed: {}. Clearing message and showing error.", err);
+            println!("Poke failed: {}", err);
         }
     ).await?;
     println!("Poke sent with id: {}", poke_id);
 
     // Scry: Query the ship’s state.
-    // let scry_result = urbit.scry("graph-store", "/keys", Some(json!({ "sample": "data" }))).await?;
+    // let scry_result = urbit.scry("groups", "/keys", None).await?;
     // println!("Scry result: {:#?}", scry_result);
   
-    //   // Call: Send a poke expecting a response.
-    //   // (Note: In this demo, call() returns an error indicating the response isn’t implemented.)
-    //   match urbit.call("hood", "helm-hi", json!("Call payload")).await {
-    //       Ok(call_response) => println!("Call response: {:#?}", call_response),
-    //       Err(e) => eprintln!("Call error: {}", e),
-    //   }
-  
-    //   // Subscribe: Start a subscription.
+    // Subscribe: Start a subscription.
     //   let sub_id = urbit.subscribe(
     //       "graph-store",
     //       "/updates",
@@ -79,26 +77,17 @@ async fn main() -> Result<()> {
     //   ).await?;
     //   println!("Subscription started with id: {}", sub_id);
   
-    //   // Thread: Run a thread (example; adjust input/output marks and thread name as appropriate).
+    // Thread: Run a thread (example; adjust input/output marks and thread name as appropriate).
     //   let thread_result: serde_json::Value = urbit.thread("input-mark", "output-mark", "example-thread", json!({"key": "value"})).await?;
     //   println!("Thread result: {:#?}", thread_result);
   
-    //   // Optionally, get ship and our names.
-    //   urbit.get_ship_name().await;
-    //   println!("Ship name: {:?}", urbit.ship);
-    //   urbit.get_our_name().await;
-    //   println!("Our name: {:?}", urbit.our);
   
-    //   // Wait for some events (for demonstration, wait 10 seconds)
-    //   tokio::time::sleep(std::time::Duration::from_secs(10)).await;
-  
-    //   // Unsubscribe from the subscription.
-    //   urbit.unsubscribe(sub_id).await?;
-    //   println!("Unsubscribed from subscription id: {}", sub_id);
-
-
     // Wait some time to allow the SSE event to arrive and the callbacks to be invoked.
     tokio::time::sleep(std::time::Duration::from_secs(10)).await;
+
+    // Unsubscribe from the subscription.
+    //   urbit.unsubscribe(sub_id).await?;
+    //   println!("Unsubscribed from subscription id: {}", sub_id);
 
     Ok(())
 }
