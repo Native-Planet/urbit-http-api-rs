@@ -2,14 +2,13 @@
 
 use std::time::Duration;
 
-/// Configuration for the Urbit client.
 #[derive(Clone, Debug)]
 pub struct Config {
-    /// Reconnect interval for SSE subscription.
+    /// The interval to wait before attempting to reconnect to a dropped SSE connection.
     pub reconnect_interval: Duration,
     /// Optional timeout for HTTP requests.
     pub timeout: Option<Duration>,
-    /// Debug mode flag.
+    /// Enable debug logging.
     pub debug: bool,
 }
 

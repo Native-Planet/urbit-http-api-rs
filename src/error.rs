@@ -1,12 +1,13 @@
 use serde::{ser::Serializer, Serialize};
+use thiserror::Error;
 
 /// A specialized `Result` type for the Urbit HTTP API crate.
 pub type Result<T> = std::result::Result<T, Error>;
 
 /// The error type for the Urbit HTTP API crate.
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, Error)]
 pub enum Error {
-    #[error(transparent)]
+    #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
 
     #[error("HTTP error: {0}")]
@@ -15,10 +16,13 @@ pub enum Error {
     #[error("Request error: {0}")]
     Request(#[from] reqwest::Error),
 
-    #[error("Message processing error: {0}")]
+    #[error("Serde JSON error: {0}")]
+    SerdeJson(#[from] serde_json::Error),
+
+    #[error("Message error: {0}")]
     Message(String),
 
-    #[error("Event channel error: {0}")]
+    #[error("Broadcast error: {0}")]
     Broadcast(#[from] tokio::sync::broadcast::error::RecvError),
 }
 

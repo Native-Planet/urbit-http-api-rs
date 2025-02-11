@@ -1,14 +1,20 @@
 //! # Urbit HTTP API
 //!
 //! This crate is a full-featured, idiomatic Rust port of the Urbit HTTP API,
-//! mirroring the functionality of the JavaScript version (js-http-api).
+//! mirroring the functionality of the JavaScript version. It supports:
 //!
-//! It supports authentication, scry, poke, event subscription with automatic reconnection,
-//! message ID and callback matching, and an event emitter pattern.
+//! - Authentication (via `connect()`)
+//! - Scry queries
+//! - Poke commands (with callbacks for success and error)
+//! - Call (a poke expecting a response)
+//! - Subscriptions via SSE (with auto‑reconnection)
+//! - An event emitter ("on"/"off") API for handling events
+//! - Thread execution and channel reset functionality
 //!
-//! For usage details, see the example in `examples/simple.rs`.
+//! For usage examples, see `examples/simple.rs`.
 
 pub mod config;
 pub mod error;
 pub mod event;
+pub mod utils;
 pub mod urbit;
